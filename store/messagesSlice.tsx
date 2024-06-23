@@ -41,8 +41,20 @@ const messagesSlice = createSlice({
         addReply(state.messages);
       }
     },
+    deleteMessage: (state, action: PayloadAction<string>) => {
+      state.messages = state.messages.filter(
+        (message) => message.id !== action.payload
+      );
+      state.messages.forEach((message) => {
+        if (message.replies) {
+          message.replies = message.replies.filter(
+            (reply) => reply.id !== action.payload
+          );
+        }
+      });
+    },
   },
 });
 
-export const { addMessage } = messagesSlice.actions;
+export const { addMessage, deleteMessage } = messagesSlice.actions;
 export default messagesSlice.reducer;

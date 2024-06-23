@@ -1,14 +1,19 @@
+"use client";
+
 // component/MessageList.tsx
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store/store";
 import { formatDistance, subDays } from "date-fns";
-import { FaReply } from "react-icons/fa";
+import { FaReply, FaTrashAlt } from "react-icons/fa";
 import MessageInput from "./MessageInput";
+import { deleteMessage } from "../store/messagesSlice";
 
 const MessageList: React.FC = () => {
   const messages = useSelector((state: RootState) => state.messages.messages);
   const [replyingTo, setReplyingTo] = useState<{ [key: string]: boolean }>({});
+  const [reply, setReply] = useState<boolean | null>(false);
+  const dispatch = useDispatch();
 
   const handleReplyClick = (id: string) => {
     setReplyingTo((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -16,6 +21,10 @@ const MessageList: React.FC = () => {
 
   const handleSend = (id: string) => {
     setReplyingTo((prev) => ({ ...prev, [id]: false }));
+  };
+
+  const handleDelete = (id: string) => {
+    dispatch(deleteMessage(id));
   };
 
   const countReplies = (message: any) => {
@@ -63,6 +72,13 @@ const MessageList: React.FC = () => {
                   <FaReply />
                   Reply
                 </button>
+                <button
+                      onClick={() => handleDelete(message.id)}
+                      className="text-red-600 text-[12px] md:text-[16px] font-semibold flex items-center gap-1"
+                    >
+                      <FaTrashAlt />
+                      Delete
+                    </button>
               </div>
             </div>
             <div className="mt-2 text-[12px] md:text-[16px]">
