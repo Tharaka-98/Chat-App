@@ -42,16 +42,16 @@ const messagesSlice = createSlice({
       }
     },
     deleteMessage: (state, action: PayloadAction<string>) => {
-      state.messages = state.messages.filter(
-        (message) => message.id !== action.payload
-      );
-      state.messages.forEach((message) => {
-        if (message.replies) {
-          message.replies = message.replies.filter(
-            (reply) => reply.id !== action.payload
-          );
-        }
-      });
+      const deleteRecursively = (messages: Message[], id: string): Message[] => {
+        return messages.filter((message) => {
+          if (message.id === id) {
+            return false;
+          }
+          message.replies = deleteRecursively(message.replies, id);
+          return true;
+        });
+      };
+      state.messages = deleteRecursively(state.messages, action.payload);
     },
   },
 });

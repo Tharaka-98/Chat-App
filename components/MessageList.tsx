@@ -1,5 +1,4 @@
 "use client";
-
 // component/MessageList.tsx
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -12,7 +11,6 @@ import { deleteMessage } from "../store/messagesSlice";
 const MessageList: React.FC = () => {
   const messages = useSelector((state: RootState) => state.messages.messages);
   const [replyingTo, setReplyingTo] = useState<{ [key: string]: boolean }>({});
-  const [reply, setReply] = useState<boolean | null>(false);
   const dispatch = useDispatch();
 
   const handleReplyClick = (id: string) => {
@@ -73,12 +71,12 @@ const MessageList: React.FC = () => {
                   Reply
                 </button>
                 <button
-                      onClick={() => handleDelete(message.id)}
-                      className="text-red-600 text-[12px] md:text-[16px] font-semibold flex items-center gap-1"
-                    >
-                      <FaTrashAlt />
-                      Delete
-                    </button>
+                  onClick={() => handleDelete(message.id)}
+                  className="text-red-600 text-[12px] md:text-[16px] font-semibold flex items-center gap-1"
+                >
+                  <FaTrashAlt />
+                  Delete
+                </button>
               </div>
             </div>
             <div className="mt-2 text-[12px] md:text-[16px]">
